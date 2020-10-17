@@ -5,3 +5,7 @@ the changes done by the user _Architekt909_ and _Vilogity_ in this repo in order
 to the original addon.
 
 I also removed a commented code block in the original addon that was causing an issue with mouse anchoring in buff frames.
+
+## Installing this version of the addon
+
+Download from [here](https://github.com/enolgor/wow-addon-tiptac/archive/master.zip) the latest changes, open the zip and copy&paste the four tiptac folders inside the zip to the Interface/AddOns folder of the game.
