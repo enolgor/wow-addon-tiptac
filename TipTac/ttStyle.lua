@@ -1,7 +1,7 @@
 local _G = getfenv(0);
 local unpack = unpack;
 local UnitName = UnitName;
-local GetQuestGreenRange = GetQuestGreenRange;
+local GetQuestGreenRange = UnitQuestTrivialLevelRange("player");
 local gtt = GameTooltip;
 
 -- TipTac refs
@@ -48,7 +48,7 @@ local function GetDifficultyLevelColor(level)
 		return "|cffff8040"; -- orange
 	elseif (level >= -2) then
 		return "|cffffff00"; -- yellow
-	elseif (level >= -GetQuestGreenRange()) then
+	elseif (level >= -UnitQuestTrivialLevelRange("player")) then
 		return "|cff40c040"; -- green
 	else
 		return "|cff808080"; -- gray

@@ -256,7 +256,7 @@ end
 --                                          Initialize Frame                                          --
 --------------------------------------------------------------------------------------------------------
 
-local f = CreateFrame("Frame",modName.."Options",UIParent);
+local f = CreateFrame("Frame",modName.."Options",UIParent, BackdropTemplateMixin and "BackdropTemplate");
 
 UISpecialFrames[#UISpecialFrames + 1] = f:GetName();
 
@@ -274,7 +274,7 @@ f:SetClampedToScreen(true);
 f:SetScript("OnShow",function(self) self:BuildCategoryPage(); end);
 f:Hide();
 
-f.outline = CreateFrame("Frame",nil,f);
+f.outline = CreateFrame("Frame",nil,f, BackdropTemplateMixin and "BackdropTemplate");
 f.outline:SetBackdrop({ bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", tile = 1, tileSize = 16, edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 } });
 f.outline:SetBackdropColor(0.1,0.1,0.2,1);
 f.outline:SetBackdropBorderColor(0.8,0.8,0.9,0.4);
@@ -311,19 +311,19 @@ local function Reset_OnClick(self)
 	f:BuildCategoryPage();
 end
 
-f.btnAnchor = CreateFrame("Button",nil,f,"UIPanelButtonTemplate");
+f.btnAnchor = CreateFrame("Button",nil,f,"UIPanelButtonTemplate", BackdropTemplateMixin and "BackdropTemplate");
 f.btnAnchor:SetSize(75,24);
 f.btnAnchor:SetPoint("BOTTOMLEFT",f.outline,"BOTTOMRIGHT",10,3);
 f.btnAnchor:SetScript("OnClick",function() TipTac:SetShown(not TipTac:IsShown()) end);
 f.btnAnchor:SetText("Anchor");
 
-f.btnReset = CreateFrame("Button",nil,f,"UIPanelButtonTemplate");
+f.btnReset = CreateFrame("Button",nil,f,"UIPanelButtonTemplate", BackdropTemplateMixin and "BackdropTemplate");
 f.btnReset:SetSize(75,24);
 f.btnReset:SetPoint("LEFT",f.btnAnchor,"RIGHT",38,0);
 f.btnReset:SetScript("OnClick",Reset_OnClick);
 f.btnReset:SetText("Defaults");
 
-f.btnClose = CreateFrame("Button",nil,f,"UIPanelButtonTemplate");
+f.btnClose = CreateFrame("Button",nil,f,"UIPanelButtonTemplate", BackdropTemplateMixin and "BackdropTemplate");
 f.btnClose:SetSize(75,24);
 f.btnClose:SetPoint("BOTTOMRIGHT",-15,15);
 f.btnClose:SetScript("OnClick",function() f:Hide(); end);
@@ -347,7 +347,7 @@ end
 
 local buttonWidth = (f.outline:GetWidth() - 8);
 local function CreateCategoryButtonEntry(parent)
-	local b = CreateFrame("Button",nil,parent);
+	local b = CreateFrame("Button",nil,parent, BackdropTemplateMixin and "BackdropTemplate");
 	b:SetSize(buttonWidth,18);
 	b:SetScript("OnClick",CategoryButton_OnClick);
 	b:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight");

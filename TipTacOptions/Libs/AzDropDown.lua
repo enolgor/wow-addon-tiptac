@@ -245,7 +245,7 @@ end
 
 -- Create Dropdown Menu Item Button
 local function CreateMenuItem()
-	local item = CreateFrame("Button",nil,menu);
+	local item = CreateFrame("Button",nil,menu, BackdropTemplateMixin and "BackdropTemplate");
 	item:SetHeight(MENU_ITEM_HEIGHT);
 	item:SetHitRectInsets(-12,-10,0,0);
 	item:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight");
@@ -306,7 +306,7 @@ end
 
 -- Creates the DropDown menu with item buttons and scrollbar
 local function CreateDropDownMenu()
-	menu = CreateFrame("Frame",nil,nil);
+	menu = CreateFrame("Frame",nil,nil, BackdropTemplateMixin and "BackdropTemplate");
 
 	menu:SetToplevel(true);
 	menu:SetClampedToScreen(true);
@@ -314,7 +314,7 @@ local function CreateDropDownMenu()
 	menu:SetScript("OnHide",function(self) if (self:IsShown()) then self:Hide(); end end);	-- hides the menu if parent is hidden
 	menu:Hide();
 
-	menu.scroll = CreateFrame("ScrollFrame","AzDropDownScroll"..REVISION,menu,"FauxScrollFrameTemplate");
+	menu.scroll = CreateFrame("ScrollFrame","AzDropDownScroll"..REVISION,menu,"FauxScrollFrameTemplate", BackdropTemplateMixin and "BackdropTemplate");
 	menu.scroll:SetScript("OnVerticalScroll",function(self,offset) FauxScrollFrame_OnVerticalScroll(self,offset,MENU_ITEM_HEIGHT,self.UpdateScroll); end);
 	menu.scroll.UpdateScroll = UpdateScroll;
 
@@ -402,10 +402,10 @@ function AzDropDown:CreateDropDown(parent,width,initFunc,selectValueFunc,isAutoS
 		return;
 	end
 
-	local dd = CreateFrame("Frame",nil,parent);
+	local dd = CreateFrame("Frame",nil,parent, BackdropTemplateMixin and "BackdropTemplate");
 	dd:SetSize(abs(width),24);
 
-	dd.button = CreateFrame("Button",nil,dd);
+	dd.button = CreateFrame("Button",nil,dd, BackdropTemplateMixin and "BackdropTemplate");
 	dd.button:SetPoint("TOPRIGHT");
 	dd.button:SetPoint("BOTTOMRIGHT");
 	dd.button:SetWidth(24);

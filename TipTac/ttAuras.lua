@@ -20,7 +20,7 @@ local validSelfCasterUnits = {
 --------------------------------------------------------------------------------------------------------
 
 local function CreateAuraFrame(parent)
-	local aura = CreateFrame("Frame",nil,parent);
+	local aura = CreateFrame("Frame",nil,parent, BackdropTemplateMixin and "BackdropTemplate");
 	aura:SetSize(cfg.auraSize,cfg.auraSize);
 
 	aura.count = aura:CreateFontString(nil,"OVERLAY");
@@ -31,7 +31,7 @@ local function CreateAuraFrame(parent)
 	aura.icon:SetAllPoints();
 	aura.icon:SetTexCoord(0.07,0.93,0.07,0.93);
 
-	aura.cooldown = CreateFrame("Cooldown",nil,aura,"CooldownFrameTemplate");
+	aura.cooldown = CreateFrame("Cooldown",nil,aura,"CooldownFrameTemplate", BackdropTemplateMixin and "BackdropTemplate");
 	aura.cooldown:SetReverse(1);
 	aura.cooldown:SetAllPoints();
 	aura.cooldown:SetFrameLevel(aura:GetFrameLevel());

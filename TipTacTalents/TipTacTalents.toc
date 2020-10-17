@@ -1,5 +1,5 @@
-## Interface: 80100
-## Version: 19.03.31
+## Interface: 90001
+## Version: 19.04.0
 ## Title: TipTacTalents
 ## Author: Aezay (Earthen Ring EU)
 ## Notes: Adds Talent Spec to Player Tooltips

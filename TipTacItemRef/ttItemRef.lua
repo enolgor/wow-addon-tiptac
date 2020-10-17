@@ -3,7 +3,7 @@ local unpack = unpack;
 
 -- Addon
 local modName = ...;
-local ttif = CreateFrame("Frame",modName);
+local ttif = CreateFrame("Frame",modName, nil, BackdropTemplateMixin and "BackdropTemplate");
 
 -- Register with TipTac core addon if available
 if (TipTac) then
@@ -368,7 +368,7 @@ end
 
 -- currency -- Thanks to Vladinator for adding this!
 function LinkTypeFuncs:currency(link,linkType,id)
-	local _, currencyCount, currencyTexture = GetCurrencyInfo(id);
+	local _, currencyCount, currencyTexture = C_CurrencyInfo.GetCurrencyInfo(id);
 	if (self.SetIconTextureAndText) then
 		self:SetIconTextureAndText(currencyTexture,currencyCount);	-- As of 5.2 GetCurrencyInfo() now returns full texture path. Previously you had to prefix it with "Interface\\Icons\\"
 	end

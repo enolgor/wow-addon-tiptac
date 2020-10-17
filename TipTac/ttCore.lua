@@ -9,7 +9,7 @@ local tconcat = table.concat;
 
 -- Addon
 local modName = ...;
-local tt = CreateFrame("Frame",modName,UIParent);
+local tt = CreateFrame("Frame",modName,UIParent, BackdropTemplateMixin and "BackdropTemplate");
 
 -- Global Chat Message Function
 function AzMsg(msg) DEFAULT_CHAT_FRAME:AddMessage(tostring(msg):gsub("|1","|cffffff80"):gsub("|2","|cffffffff"),0.5,0.75,1.0); end
@@ -229,7 +229,7 @@ local targetedByList;
 tt.u = u;
 
 -- Hi-jack the GTT backdrop table for our own evil needs
-local tipBackdrop = GAME_TOOLTIP_BACKDROP_STYLE_DEFAULT;
+local tipBackdrop = GAME_TOOLTIP_BACKDROP_STYLE_DEFAULT or TOOLTIP_BACKDROP_STYLE_DEFAULT;
 tipBackdrop.backdropColor = CreateColor(1,1,1);
 tipBackdrop.backdropBorderColor = CreateColor(1,1,1);
 
@@ -318,7 +318,7 @@ tt.text = tt:CreateFontString(nil,"ARTWORK","GameFontHighlight");
 tt.text:SetText("TipTacAnchor");
 tt.text:SetPoint("LEFT",6,0);
 
-tt.close = CreateFrame("Button",nil,tt,"UIPanelCloseButton");
+tt.close = CreateFrame("Button",nil,tt,"UIPanelCloseButton", BackdropTemplateMixin and "BackdropTemplate");
 tt.close:SetSize(24,24);
 tt.close:SetPoint("RIGHT");
 
@@ -516,7 +516,7 @@ end
 
 -- Applies the backdrop, color and border color. The GTT will often reset these internally.
 function tt:ApplyBackdrop(tip)
-	GameTooltip_SetBackdropStyle(tip,tipBackdrop)
+	SharedTooltip_SetBackdropStyle(tip,tipBackdrop)
 end
 
 --------------------------------------------------------------------------------------------------------

@@ -154,7 +154,7 @@ end
 
 -- Creates a bar with the given mixins
 function ttBars:CreateBar(parent,tblMixin)
-	local bar = CreateFrame("StatusBar",nil,parent);
+	local bar = CreateFrame("StatusBar",nil,parent, BackdropTemplateMixin and "BackdropTemplate");
 	bar:Hide();
 
 --	bar:SetWidth(0);	-- Az: As of patch 3.3.3, setting the initial size will somehow mess up the texture. Previously this initilization was needed to fix an anchoring issue.
