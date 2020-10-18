@@ -228,14 +228,15 @@ local targetedByList;
 
 tt.u = u;
 
+-- Not needed since we replaced the tt:ApplyBackdrop 
 -- Hi-jack the GTT backdrop table for our own evil needs
-local tipBackdrop = GAME_TOOLTIP_BACKDROP_STYLE_DEFAULT or TOOLTIP_BACKDROP_STYLE_DEFAULT;
-tipBackdrop.backdropColor = CreateColor(1,1,1);
-tipBackdrop.backdropBorderColor = CreateColor(1,1,1);
+-- local tipBackdrop = GAME_TOOLTIP_BACKDROP_STYLE_DEFAULT or TOOLTIP_BACKDROP_STYLE_DEFAULT;
+-- tipBackdrop.backdropColor = CreateColor(1,1,1);
+-- tipBackdrop.backdropBorderColor = CreateColor(1,1,1);
 
--- To ensure that the alpha channel is applied to the backdrop color, we have to cheat a bit, by pointing the GetRGB() function to GetRGBA().
-tipBackdrop.backdropColor.GetRGB = ColorMixin.GetRGBA;
-tipBackdrop.backdropBorderColor.GetRGB = ColorMixin.GetRGBA;
+-- -- To ensure that the alpha channel is applied to the backdrop color, we have to cheat a bit, by pointing the GetRGB() function to GetRGBA().
+-- tipBackdrop.backdropColor.GetRGB = ColorMixin.GetRGBA;
+-- tipBackdrop.backdropBorderColor.GetRGB = ColorMixin.GetRGBA;
 
 --------------------------------------------------------------------------------------------------------
 --                              MetaClass for Pushing Values Into Table                               --
@@ -474,19 +475,21 @@ function tt:ApplySettings()
 		self:UnregisterEvent("CURSOR_UPDATE");
 	end
 
+	-- Not needed since we replaced the tt:ApplyBackdrop 
+	
 	-- Set Backdrop -- not setting "tileSize" as we dont tile
-	tipBackdrop.bgFile = cfg.tipBackdropBG;
-	tipBackdrop.edgeFile = cfg.tipBackdropEdge;
-	tipBackdrop.tile = false;
-	tipBackdrop.tileEdge = false;
-	tipBackdrop.edgeSize = cfg.backdropEdgeSize;
-	tipBackdrop.insets.left = cfg.backdropInsets;
-	tipBackdrop.insets.right = cfg.backdropInsets;
-	tipBackdrop.insets.top = cfg.backdropInsets;
-	tipBackdrop.insets.bottom = cfg.backdropInsets;
+	-- tipBackdrop.bgFile = cfg.tipBackdropBG;
+	-- tipBackdrop.edgeFile = cfg.tipBackdropEdge;
+	-- tipBackdrop.tile = false;
+	-- tipBackdrop.tileEdge = false;
+	-- tipBackdrop.edgeSize = cfg.backdropEdgeSize;
+	-- tipBackdrop.insets.left = cfg.backdropInsets;
+	-- tipBackdrop.insets.right = cfg.backdropInsets;
+	-- tipBackdrop.insets.top = cfg.backdropInsets;
+	-- tipBackdrop.insets.bottom = cfg.backdropInsets;
 
-	tipBackdrop.backdropColor:SetRGBA(unpack(cfg.tipColor));
-	tipBackdrop.backdropBorderColor:SetRGBA(unpack(cfg.tipBorderColor));
+	-- tipBackdrop.backdropColor:SetRGBA(unpack(cfg.tipColor));
+	-- tipBackdrop.backdropBorderColor:SetRGBA(unpack(cfg.tipBorderColor));
 
 	-- Set Scale, Backdrop, Gradient
 	for _, tip in ipairs(TT_TipsToModify) do
@@ -515,8 +518,51 @@ function tt:ApplySettings()
 end
 
 -- Applies the backdrop, color and border color. The GTT will often reset these internally.
-function tt:ApplyBackdrop(tip)
-	SharedTooltip_SetBackdropStyle(tip,tipBackdrop)
+-- Replaced by suggested change from frumpymoons in issue #1
+-- Hijacked code from SharedTooltip_SetBackdropStyle, for some reason calling it doesn't work
+
+function tt:ApplyBackdrop(self)
+	
+	local style = {
+		bgFile = cfg.tipBackdropBG,
+		edgeFile = cfg.tipBackdropEdge,
+		tile = false,
+		tileEdge = false,
+		edgeSize = cfg.backdropEdgeSize,
+		insets = { left = cfg.backdropInsets, right = cfg.backdropInsets, top = cfg.backdropInsets, bottom = cfg.backdropInsets },
+		backdropBorderColor = CreateColor(unpack(cfg.tipBorderColor)),
+		backdropColor = CreateColor(unpack(cfg.tipColor)),
+	}
+	--- Code from SharedXML/SharedTooltipTemplates.lua - SharedTooltip_SetBackdropStyle();
+	self:SetBackdrop(style);
+	self:SetBackdropBorderColor((style.backdropBorderColor or TOOLTIP_DEFAULT_COLOR):GetRGB());
+	self:SetBackdropColor((style.backdropColor or TOOLTIP_DEFAULT_BACKGROUND_COLOR):GetRGB());
+
+	if self.TopOverlay then
+		if style.overlayAtlasTop then
+			self.TopOverlay:SetAtlas(style.overlayAtlasTop, true);
+			self.TopOverlay:SetScale(style.overlayAtlasTopScale or 1.0);
+			self.TopOverlay:SetPoint("CENTER", self, "TOP", style.overlayAtlasTopXOffset or 0, style.overlayAtlasTopYOffset or 0);
+			self.TopOverlay:Show();
+		else
+			self.TopOverlay:Hide();
+		end
+	end
+
+	if self.BottomOverlay then
+		if style.overlayAtlasBottom then
+			self.BottomOverlay:SetAtlas(style.overlayAtlasBottom, true);
+			self.BottomOverlay:SetScale(style.overlayAtlasBottomScale or 1.0);
+			self.BottomOverlay:SetPoint("CENTER", self, "BOTTOM", style.overlayAtlasBottomXOffset or 0, style.overlayAtlasBottomYOffset or 0);
+			self.BottomOverlay:Show();
+		else
+			self.BottomOverlay:Hide();
+		end
+	end
+
+	if style.padding then
+		self:SetPadding(style.padding.right, style.padding.bottom, style.padding.left, style.padding.top);
+	end
 end
 
 --------------------------------------------------------------------------------------------------------
@@ -936,6 +982,12 @@ function tt:HookTips()
 
 	-- Replace GameTooltip_SetDefaultAnchor (For Re-Anchoring) -- Patch 3.2 made this function secure
 	hooksecurefunc("GameTooltip_SetDefaultAnchor",GTT_SetDefaultAnchor);
+
+	-- Add hook as suggested by frumpymoons in issue #1
+
+	hooksecurefunc("SharedTooltip_SetBackdropStyle",function(self)
+		tt:ApplyBackdrop(self)
+	end)
 
 	-- Clear this function as it's not needed anymore
 	self.HookTips = nil;
