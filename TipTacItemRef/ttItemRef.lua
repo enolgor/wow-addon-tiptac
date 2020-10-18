@@ -368,7 +368,9 @@ end
 
 -- currency -- Thanks to Vladinator for adding this!
 function LinkTypeFuncs:currency(link,linkType,id)
-	local _, currencyCount, currencyTexture = C_CurrencyInfo.GetCurrencyInfo(id);
+	local currencyinfo = C_CurrencyInfo.GetCurrencyInfo(id);
+    local currencyCount = currencyinfo.quantity;
+    local currencyTexture = currencyinfo.iconFileID;
 	if (self.SetIconTextureAndText) then
 		self:SetIconTextureAndText(currencyTexture,currencyCount);	-- As of 5.2 GetCurrencyInfo() now returns full texture path. Previously you had to prefix it with "Interface\\Icons\\"
 	end
