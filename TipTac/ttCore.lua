@@ -522,7 +522,8 @@ end
 -- Hijacked code from SharedTooltip_SetBackdropStyle, for some reason calling it doesn't work
 
 function tt:ApplyBackdrop(self)
-	
+	-- Fix from frumpymoons to fix issue #6 with child tooltip clipping
+	if not self or (self.IsEmbedded or not self.SetBackdrop) or self:IsForbidden() then return end
 	local style = {
 		bgFile = cfg.tipBackdropBG,
 		edgeFile = cfg.tipBackdropEdge,
