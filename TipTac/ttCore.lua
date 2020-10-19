@@ -536,8 +536,8 @@ function tt:ApplyBackdrop(self)
 	}
 	--- Code from SharedXML/SharedTooltipTemplates.lua - SharedTooltip_SetBackdropStyle();
 	self:SetBackdrop(style);
-	self:SetBackdropBorderColor((style.backdropBorderColor or TOOLTIP_DEFAULT_COLOR):GetRGB());
-	self:SetBackdropColor((style.backdropColor or TOOLTIP_DEFAULT_BACKGROUND_COLOR):GetRGB());
+	self:SetBackdropBorderColor((style.backdropBorderColor or TOOLTIP_DEFAULT_COLOR):GetRGBA());
+	self:SetBackdropColor((style.backdropColor or TOOLTIP_DEFAULT_BACKGROUND_COLOR):GetRGBA());
 
 	if self.TopOverlay then
 		if style.overlayAtlasTop then
