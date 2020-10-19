@@ -523,7 +523,6 @@ end
 
 function tt:ApplyBackdrop(self)
 	-- Fix from frumpymoons to fix issue #6 with child tooltip clipping
-	if not self or (self.IsEmbedded or not self.SetBackdrop) or self:IsForbidden() then return end
 	local style = {
 		bgFile = cfg.tipBackdropBG,
 		edgeFile = cfg.tipBackdropEdge,
@@ -534,6 +533,8 @@ function tt:ApplyBackdrop(self)
 		backdropBorderColor = CreateColor(unpack(cfg.tipBorderColor)),
 		backdropColor = CreateColor(unpack(cfg.tipColor)),
 	}
+	-- Fix from @hobulilan for embedded tooltips
+	if self.IsEmbedded then style = GAME_TOOLTIP_BACKDROP_STYLE_EMBEDDED end
 	--- Code from SharedXML/SharedTooltipTemplates.lua - SharedTooltip_SetBackdropStyle();
 	self:SetBackdrop(style);
 	self:SetBackdropBorderColor((style.backdropBorderColor or TOOLTIP_DEFAULT_COLOR):GetRGBA());
