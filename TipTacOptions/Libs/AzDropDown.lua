@@ -325,6 +325,7 @@ local function CreateDropDownMenu()
 	menu.items = {};
 	menu.list = setmetatable({},{ __index = function(t,k) t[k] = #storage > 0 and tremove(storage,#storage) or {}; return t[k]; end });
 
+	menu:SetBackdrop(AzDropDown.backdrop);
 	Mixin(menu,DropDownMenuMixin);
 end
 
@@ -423,6 +424,7 @@ function AzDropDown:CreateDropDown(parent,width,initFunc,selectValueFunc,isAutoS
 	dd.label:SetJustifyH("RIGHT");
 	dd.label:SetWordWrap(false);
 
+	dd:SetBackdrop(AzDropDown.backdrop);
 	Mixin(dd,DropDownFrameMixin);
 
 	dd:ApplyBackdrop(AzDropDown.backdrop);
